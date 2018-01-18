@@ -2,6 +2,8 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os
+
 text = '''
 如果你是一位教师，那么不管你的工作单位是高中、大学还是职业培训等教育机构，你都能在MOOC上找到对学生有用的内容。近期许多MOOC实验项目的目标都是建设一个课堂教学支持系统。我们根据研究结果、采访和我们参与的课程整理出以下建议，希望能够指导教师将MOOC的经验和资源运用到传统课堂教学中。
 
@@ -42,21 +44,26 @@ MOOC的一个缺陷就是无法组建高效的学习小组，而教师在这方�
 from snownlp import normal
 from snownlp import seg
 from snownlp.summary import textrank
-
+from snownlp import sentiment
 
 if __name__ == '__main__':
-    t = normal.zh2hans(text)
-    sents = normal.get_sentences(t)
-    doc = []
-    for sent in sents:
-        words = seg.seg(sent)
-        words = normal.filter_stop(words)
-        doc.append(words)
-    rank = textrank.TextRank(doc)
-    rank.solve()
-    for index in rank.top_index(5):
-        print(sents[index])
-    keyword_rank = textrank.KeywordTextRank(doc)
-    keyword_rank.solve()
-    for w in keyword_rank.top_index(5):
-        print(w)
+    # t = normal.zh2hans(text)
+    # sents = normal.get_sentences(t)
+    # doc = []
+    # for sent in sents:
+    #     words = seg.seg(sent)
+    #     words = normal.filter_stop(words)
+    #     doc.append(words)
+    # rank = textrank.TextRank(doc)
+    # rank.solve()
+    # for index in rank.top_index(5):
+    #     print(sents[index])
+    # keyword_rank = textrank.KeywordTextRank(doc)
+    # keyword_rank.solve()
+    # for w in keyword_rank.top_index(5):
+    #     print(w)
+    path = os.getcwd() + '/snownlp/sentiment/'
+    print(path)
+
+    sentiment.train(path+'neg.txt',path+'pos.txt')
+    sentiment.save('sentiment.marshal')
